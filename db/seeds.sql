@@ -44,7 +44,7 @@ VALUES
 	("Legal Assistant", 800000, 8),
 	("Junior Engineer", 85000, 7),
 	("HR Admin", 97000, 5),
-	("Social Meida Admin", 15000, 6),
+	("Social Media Admin", 15000, 6),
 	("Secretary", 85000, 2);
 
 
