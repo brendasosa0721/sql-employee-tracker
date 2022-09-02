@@ -72,8 +72,6 @@ const compileTeamMembers = () => {
             addEmployees()
         } else if (answers.compileTeamMembers === "Add Roles") {
             addRoles()
-        }else if(answers.compileTeamMembers === "Update Employee Role"){
-            updateEmployeeRole()
         }
 
     });
@@ -164,7 +162,84 @@ const addEmployees = () => {
 
 //Add Roles
 
+const addRoles = () => {
+    inquirer
+      .prompt([
+        {
+          type: "input",
+          name: "roleName",
+          message: "What is the role you would like to add?",
+          validate: (name) => {
+            for (const role of roles) {
+              if (
+                role.title.toLowerCase().split(" ").includes(name.toLowerCase())
+              ) {
+                console.log(`\n${name} role already exists`);
+                return false;
+              }
+            }
+          },
+        },
+        {
+          type: "input",
+          name: "salary",
+          message: "What is the annual salary for this role?",
+          validate: (salary) =>
+            (!isNaN(salary) && /^[0-9]+$/.test(salary)) ||
+            "Please enter a valid number.",
+        },
+        {
+          type: "list",
+          name: "deparmentId",
+          message: "Which deparment would like to add the role to?",
+          choices: departments.map(({ id, name }) => ({
+            name: name,
+            value: id,
+          })),
+        },
+      ])
+      .then((answers) => {
+        connection.query("INSERT INTO role SET ?", [answers], (err, data) => {
+          if (err) throw err;
+          console.table(data);
+          compileTeamMembers();
+        });
+      });
+}
 // Add Department
+const addDepartment = () => {
+    inquirer
+      .prompt([
+        {
+          name: "departmentname",
+          type: "input",
+          message: "What is the department you would like to add?",
+          choices: [
+            { name: "Board Member" },
+            { name: "Operation" },
+            { name: "Finance" },
+            { name: "Sales" },
+            { name: "HR" },
+            { name: "HR" },
+            { name: "Marketing" },
+            { name: "IT" },
+            { name: "Legal" },
+          ],
+        },
+      ])
+      .then((answers) => {
+        connection.query(
+          "INSERT INTO department SET ?",
+          [answers],
+          (err, data) => {
+            if (err) throw err;
+            console.table(data);
+            compileTeamMembers();
+          }
+        );
+      });
+}
 
-// Update Employee Role
 
+
+	
