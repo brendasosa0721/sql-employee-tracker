@@ -6,8 +6,8 @@ const inquirer = require("inquirer");
 const mysql = require("mysql2");
 const table = require("console.table");
 const fs = require("fs");
-const Query = require("mysql2/typings/mysql/lib/protocol/sequences/Query");
-const { allowedNodeEnvironmentFlags } = require("process");
+// const Query = require("mysql2/typings/mysql/lib/protocol/sequences/Query");
+// const { allowedNodeEnvironmentFlags } = require("process");
 
 // Connecting sql database
 
@@ -29,14 +29,14 @@ connection.connect(err => {
 
 
 // Create array for roles
-const roles = [];
-const departments = [];
-const employees = [];
+// const roles = [];
+// const departments = [];
+// const employees = [];
 
 
 
 
-// Confirm selection
+// Confirm selection- After selection node index.js this options will come up
 const compileTeamMembers = () => {
     inquirer.prompt([
       {
@@ -61,15 +61,17 @@ const compileTeamMembers = () => {
         ],
       },
     ]).then((answers) => {
-        if (answers.compileTeamMembers === "View All Employees") {
+        if (answers.compileTeamMembers === "View All Employees") { // Connecting the database from seeds into this function
           allEmployees();
         } else if (answers.compileTeamMembers === "View All Departments") {
-            allDeparments()
+          // Connecting the database from seeds into this function
+          allDepartments();
         } else if (answers.compileTeamMembers === "View All Roles" ) {
-            allRoles ()
-            
+          // Connecting the database from seeds into this function
+          allRoles();
         } else if (answers.compileTeamMembers === "Add Employees") {
-            addEmployees()
+          // Connecting the database from seeds into this function
+          addEmployees();
         } else if (answers.compileTeamMembers === "Add Roles") {
             addRoles()
         }
@@ -88,7 +90,7 @@ const allEmployees = () => {
 };
 
 //View all deparments
-const viewEmployees =() => {
+const allDepartments =() => {
     connection.query("SELECT * FROM department" , (err, data) => {
         if(err) throw err;
         console.table(data);
@@ -99,8 +101,8 @@ const viewEmployees =() => {
 
 //View all roles
 
-const viewRoles = () => {
-    connection.query("SELECT * FROM role", (err, data) => {
+const allRoles = () => {
+    connection.query("SELECT * FROM roles", (err, data) => {
         if(err) throw err;
         console.table(data);
         compileTeamMembers();
@@ -199,7 +201,7 @@ const addRoles = () => {
         },
       ])
       .then((answers) => {
-        connection.query("INSERT INTO role SET ?", [answers], (err, data) => {
+        connection.query("INSERT INTO roles SET ?", [answers], (err, data) => {
           if (err) throw err;
           console.table(data);
           compileTeamMembers();
@@ -207,7 +209,7 @@ const addRoles = () => {
       });
 }
 // Add Department
-const addDepartment = () => {
+const addDept = () => {
     inquirer
       .prompt([
         {

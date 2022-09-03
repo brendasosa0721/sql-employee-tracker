@@ -21,12 +21,7 @@ VALUES
 
 
 -- ROLE TABLE 
-SET SQL_SAFE_UPDATES = 0;
-DELETE FROM role;
-SET SQL_SAFE_UPDATES = 1;
-ALTER TABLE role AUTO_INCREMENT = 1;
-INSERT INTO role
-	(title, salary, department_id)
+INSERT INTO roles (title, salary, department_id)
 VALUES
 	("CEO", 500000, 1),
 	("CFO", 335000, 3),
@@ -50,12 +45,8 @@ VALUES
 
 
 -- EMPLOYEE TABLE 
-SET SQL_SAFE_UPDATES = 0;
-DELETE FROM employee;
-SET SQL_SAFE_UPDATES = 1;
-ALTER TABLE employee AUTO_INCREMENT = 1;
-INSERT INTO employee
-	(first_name, last_name, role_id, manager_id)
+
+INSERT INTO employee (first_name, last_name, role_id)
 VALUES
 	("Paola", "Delgadillo", 1 , null),
 	("Romeo", "Aguilar", 2, 1),
