@@ -1,14 +1,9 @@
 USE employee_db;
 
--- DEPARTMENT TABLE
-SET SQL_SAFE_UPDATES = 0;
-DELETE FROM department;
-SET SQL_SAFE_UPDATES = 1;
 
-ALTER TABLE department AUTO_INCREMENT = 1;
 
-INSERT INTO department
-	(name)
+
+INSERT INTO department (name)
 VALUES
 	("Board Member"),
 	("Operation"),
@@ -46,7 +41,7 @@ VALUES
 
 -- EMPLOYEE TABLE 
 
-INSERT INTO employee (first_name, last_name, role_id)
+INSERT INTO employee (first_name, last_name, role_id , manager_id)
 VALUES
 	("Paola", "Delgadillo", 1 , null),
 	("Romeo", "Aguilar", 2, 1),
