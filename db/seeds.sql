@@ -60,5 +60,3 @@ VALUES
 	("Will", "Doe", 15,7),
 	("Zack", "Tomaya", 16,4),
 	("Keith", "Hamilton", 17, null);
-       
-

@@ -48,16 +48,10 @@ const compileTeamMembers = () => {
           "View All Employees",
           "View All Departments",
           "View All Roles",
-        //   "View Employees by Managers",
           "Add Employees",
           "Add Roles",
           "Add Departments",
           "Update Employee Role",
-        //   "Update employee Manager",
-        //   "Delete Employees",
-        //   "Delete Departments",
-        //   "Delete Roles",
-        //   "View Department's Utilized Budget",
           "Exit",
         ],
       },
@@ -82,7 +76,7 @@ const compileTeamMembers = () => {
       if (nextAnswer.compileTeamMembers === "Add Roles") {
         addRoles();
       }
-      if (nextAnswer.compileTeamMembers === "Add Deparments") {
+      if (nextAnswer.compileTeamMembers === "Add Departments") {
         addDept();
       }
       if (nextAnswer.compileTeamMembers === "Update Employee Role") {
@@ -212,8 +206,8 @@ const addRoles = () => {
     ])
     .then((answer) => {
       const params = [answer.title, answer.salary];
-      const sql = `SELECT * FROM departments`;
-      db.query(sql, (err, rows) => {
+      const sql = `SELECT * FROM department`;
+      connection.query(sql, (err, rows) => {
         if (err) {
           throw err;
         }
@@ -235,12 +229,12 @@ const addRoles = () => {
             params.push(department);
             const sql = `INSERT INTO roles (title, salary, department_id)
           VALUES (?, ?, ?)`;
-            db.query(sql, params, (err) => {
+            connection.query(sql, params, (err) => {
               if (err) {
                 throw err;
               }
               console.log("Role added!");
-              return viewRoles();
+              return allRoles();
             });
           });
       });
@@ -280,7 +274,7 @@ const addDept = () => {
     .then((answer) => {
       const params = [answer.firstName, answer.lastName];
       const sql = `SELECT * FROM roles`;
-      db.query(sql, (err, rows) => {
+      connection.query(sql, (err, rows) => {
         if (err) {
           throw err;
         }
@@ -297,8 +291,8 @@ const addDept = () => {
           .then((roleAnswer) => {
             const role = roleAnswer.role;
             params.push(role);
-            const sql = `SELECT * FROM employees`;
-            db.query(sql, (err, rows) => {
+            const sql = `SELECT * FROM employee`;
+            connection.query(sql, (err, rows) => {
               if (err) {
                 throw err;
               }
@@ -319,14 +313,14 @@ const addDept = () => {
                 .then((managerAnswer) => {
                   const manager = managerAnswer.manager;
                   params.push(manager);
-                  const sql = `INSERT INTO employees (first_name, last_name, role_id, manager_id)
+                  const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id)
               VALUES (?, ?, ?, ?)`;
-                  db.query(sql, params, (err) => {
+                  connection.query(sql, params, (err) => {
                     if (err) {
                       throw err;
                     }
                     console.log("Employee added!");
-                    return viewEmployees();
+                    return allEmployees();
                   });
                 });
             });
@@ -336,9 +330,9 @@ const addDept = () => {
 };
 
 // Update employee
-const updateEmpl = () => {
-  const sql = `SELECT first_name, last_name, id FROM employees`;
-  db.query(sql, (err, rows) => {
+const updateEmployee = () => {
+  const sql = `SELECT first_name, last_name, id FROM employee`;
+  connection.query(sql, (err, rows) => {
     if (err) {
       throw err;
     }
@@ -358,8 +352,8 @@ const updateEmpl = () => {
       .then((employeeAnswer) => {
         const employee = employeeAnswer.employee;
         const params = [employee];
-        const sql = `SELECT first_name, last_name, id FROM employees`;
-        db.query(sql, (err, rows) => {
+        const sql = `SELECT first_name, last_name, id FROM employee`;
+        connection.query(sql, (err, rows) => {
           if (err) {
             throw err;
           }
@@ -380,15 +374,15 @@ const updateEmpl = () => {
             .then((managerAnswer) => {
               const manager = managerAnswer.manager;
               params.unshift(manager);
-              const sql = `UPDATE employees
+              const sql = `UPDATE employee
                         SET manager_id = ?
                         WHERE id = ?`;
-              db.query(sql, params, (err) => {
+              connection.query(sql, params, (err) => {
                 if (err) {
                   throw err;
                 }
                 console.log("Employee updated!");
-                return viewEmployees();
+                return allEmployees();
               });
             });
         });
